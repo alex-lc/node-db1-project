@@ -47,4 +47,35 @@ router.post('/', (req, res) => {
 
 });
 
+// put to edit account
+router.put('/:id', (req, res) => {
+
+    const id = req.params.id;
+    const changes = req.body;
+
+    db('accounts').where({ id }).update(changes)
+        .then(count => {
+            res.status(200).json(count);
+        })
+        .catch(err => {
+            res.status(400).json({ error: "The account could not be updated." });
+        })
+});
+
+// delete an account
+router.delete('/:id', (req, res) => {
+
+    const id = req.params.id;
+
+    db('accounts')
+        .where({ id })
+        .del()
+        .then(count => {
+            res.status(200).json(count);
+        })
+        .catch(err => {
+            res.status(400).json({ error: "Account could not be deleted" });
+        })
+});
+
 module.exports = router;
